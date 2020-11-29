@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import Notification from '../notification';
 
 function Navbar() {
     const [activeLocation, setActiveLocation] = useState("/");
@@ -20,6 +21,9 @@ function Navbar() {
                 </Link>
             </div>
             <ul className="nav-list">
+                <li>
+                    <Notification />
+                </li>
                 <li className={
                         activeLocation === '/Search'
                             ? 'nav-item active'

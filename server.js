@@ -1,15 +1,23 @@
 const express = require('express');
-const path = require('path');
-const PORT = process.env.PORT || 3001;
-const IOPORT = process.env.IOPORT || 3002;
 const app = express();
 
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-io.on('connection', (client) => {
+const path = require('path');
 
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const PORT = process.env.PORT || 3001;
+
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: `http://localhost:${ process.env.PORT || 3001 }`,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
 });
-server.listen(IOPORT);
 
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -41,7 +49,20 @@ mongoose.connect(
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
 
-  app.listen(PORT, () => {
+  http.listen(PORT, () => {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
+  });
+
+  io.on('connection', (socket) => {
+    console.log('new client connected');
+    socket.emit('connection', null);
+
+    socket.on('send-message', message => {
+      io.emit('message', message);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('disconnect');
+    })
   });
 });
