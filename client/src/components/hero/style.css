@@ -1,0 +1,6 @@
+.hero {
+    padding-top: var(--nav-height);
+    margin: 40px 0;
+    width: 100%;
+    text-align: center;
+}

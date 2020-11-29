@@ -1,0 +1,39 @@
+.book {
+    padding: 10px;
+}
+
+.bookHeader {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.bookBtn {
+    padding: 5px 10px;
+    margin-left: 15px;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.publishInfo {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.bookImg {
+    height: 150px;
+    margin-right: 20px;
+}
+
+.descriptionContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.saved {
+    background-color: rgb(29, 194, 29);
+}

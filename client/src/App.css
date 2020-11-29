@@ -1,0 +1,16 @@
+:root {
+  --nav-height: 50px;
+  --primary-blue: rgb(53, 137, 216);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background-color: lightgrey;
+  min-width: 380px;
+  width: auto !important;
+}
