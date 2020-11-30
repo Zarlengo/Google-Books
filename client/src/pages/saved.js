@@ -7,7 +7,7 @@ import API from '../utils/API';
 import './saved.css';
 
 export default function SavedPage() {
-    const [books, setBooks] = useContext(BookContext);
+    const {books, setBooks} = useContext(BookContext);
 
     useEffect(() => {
         API.getBooks()

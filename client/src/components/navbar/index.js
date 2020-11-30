@@ -24,6 +24,7 @@ function Navbar() {
                 <li>
                     <Notification />
                 </li>
+                <span className="nav-spacer">|</span>
                 <li className={
                         activeLocation === '/Search'
                             ? 'nav-item active'

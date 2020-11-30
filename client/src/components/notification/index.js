@@ -1,25 +1,48 @@
-import React from 'react';
-// import { ChannelList } from './ChannelList';
-// import './chat.scss';
-// import { MessagesPanel } from './MessagesPanel';
+import React, { useContext, useEffect } from 'react';
+import BookContext from "../../utils/BookContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
+
+import './style.css';
+
+const io = require('socket.io-client');
+const socket = io({
+    withCredentials: true,
+    extraHeaders: {
+        "google-books-header": "header-content"
+    }
+});
+
 function Notification() {
-    const SERVER = `http://localhost:${ process.env.PORT || 3000 }`;
-    const io = require("socket.io-client");
-    const socket = io(SERVER, {
-        withCredentials: true,
-        extraHeaders: {
-          "my-custom-header": "abcd"
-        }
+    const { notifications, setNotifications } = useContext(BookContext);
+
+    useEffect(() => {  
+        socket.on('book change', payload => {
+            console.log(payload);
+            setNotifications(notifications + 1);
+        });
     });
-    
-    socket.on('connection', () => {
-        console.log(`I'm connected to the notifications`);
-    })
+        
+    useEffect(() => {
+        console.log('received new message');
+        document.title = `${notifications} new books have been changed`;
+    }, [notifications]); //only re-run the effect if new message comes in
+
 
     return (
-        <div className='notifications'>
-            
+        <div className="notification">
+            <FontAwesomeIcon icon={ faBookOpen } />
+            { notifications > 0 ? <span className="badge">{ notifications }</span> : '' }
         </div>
     );
 }
+
+export const handleNewMessage = (method, book) => {
+    console.log('emitting new message');
+    socket.emit('book', {
+        method,
+        book,
+    });
+}
+
 export default Notification;

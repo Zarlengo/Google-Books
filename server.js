@@ -1,26 +1,13 @@
 const express = require('express');
-const app = express();
-
 const path = require('path');
+const mongoose = require('mongoose');
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+const app = express();
 const PORT = process.env.PORT || 3001;
-
-const http = require('http').createServer(app);
-const io = require('socket.io')(http, {
-  cors: {
-    origin: `http://localhost:${ process.env.PORT || 3001 }`,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
-});
-
-const router = express.Router();
-const mongoose = require('mongoose');
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -49,20 +36,36 @@ mongoose.connect(
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
 
-  http.listen(PORT, () => {
-    console.log(`🌎 ==> API server now on port ${PORT}!`);
+  // app.listen(PORT, () => {
+  //   console.log(`🌎 ==> API server now on port ${PORT}!`);
+  // });
+  const server = require('http').createServer(app);
+  const io = require("socket.io")(server, {
+    cors: {
+      methods: ["GET", "POST"],
+      allowedHeaders: ["google-books-header"],
+      credentials: true,
+    }
   });
 
-  io.on('connection', (socket) => {
-    console.log('new client connected');
-    socket.emit('connection', null);
 
-    socket.on('send-message', message => {
-      io.emit('message', message);
+
+  io.on('connection', socket => {
+    console.log('a user connected');
+    
+    socket.on('disconnect', reason => {
+      console.log('user disconnected');
     });
-
-    socket.on('disconnect', () => {
-      console.log('disconnect');
-    })
+  
+    socket.on('book', data => {
+      console.log(data);
+      socket.broadcast
+      .emit('book change', data)
+    });
   });
+    
+  server.listen(PORT, () => {
+    console.log(`Socket is listening on port ${ PORT }!`);
+  });
+
 });
