@@ -4,7 +4,7 @@
 [Live Site - https://zar-google-books.herokuapp.com/](https://zar-google-books.herokuapp.com/)
 
 ## Description
-A React app to display non-sensitive employee information to an organization.
+A MERN site to manage interactions with googleBooks. The site also includes socketIO for a notification system displaying information when other users make changes to the database.
 
 ![Welcome](./images/Hero.jpg)
 
