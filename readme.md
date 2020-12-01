@@ -1,7 +1,7 @@
 # React Book Search
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-[Live Site - https://zar-google-books.herokuapp.com//](https://zar-google-books.herokuapp.com//)
+[Live Site - https://zar-google-books.herokuapp.com/](https://zar-google-books.herokuapp.com/)
 
 ## Description
 A React app to display non-sensitive employee information to an organization.
@@ -110,4 +110,4 @@ Listings of saved books for review.
 ## 5 Questions
 * [Github Profile for Zarlengo](https://github.com/Zarlengo)
 * [Send email to christopher@zarlengo.net](mailto:christopher@zarlengo.net)
-* [File an issue](https://zar-google-books.herokuapp.com//issues)
+* [File an issue](https://zar-google-books.herokuapp.com/issues)
