@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 import API from '../../utils/API';
+import { handleNewMessage } from '../notification';
 
 function Book({book, setBooks, mode}) {
     const [save, setSave] = useState(false);
@@ -25,6 +26,7 @@ function Book({book, setBooks, mode}) {
         API.addBook(bookObject).then((response) => {
             if (response.status === 200) {
                 setSave(true);
+                handleNewMessage('add', book.title);
             }
         });
     }
@@ -36,6 +38,7 @@ function Book({book, setBooks, mode}) {
                     .then(res => {
                         if (res.status === 200) {
                             setBooks(res.data);
+                            handleNewMessage('delete', book.title);
                         }
                     });
             } else {

@@ -1,18 +1,13 @@
 const express = require('express');
 const path = require('path');
-const PORT = process.env.PORT || 3001;
-const IOPORT = process.env.IOPORT || 3002;
-const app = express();
-
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-io.on('connection', (client) => {
-
-});
-server.listen(IOPORT);
-
-const router = express.Router();
 const mongoose = require('mongoose');
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const app = express();
+const PORT = process.env.PORT || 3001;
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +36,36 @@ mongoose.connect(
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
 
-  app.listen(PORT, () => {
-    console.log(`🌎 ==> API server now on port ${PORT}!`);
+  // app.listen(PORT, () => {
+  //   console.log(`🌎 ==> API server now on port ${PORT}!`);
+  // });
+  const server = require('http').createServer(app);
+  const io = require("socket.io")(server, {
+    cors: {
+      methods: ["GET", "POST"],
+      allowedHeaders: ["google-books-header"],
+      credentials: true,
+    }
   });
+
+
+
+  io.on('connection', socket => {
+    console.log('a user connected');
+    
+    socket.on('disconnect', reason => {
+      console.log('user disconnected');
+    });
+  
+    socket.on('book', data => {
+      console.log(data);
+      socket.broadcast
+      .emit('book change', data)
+    });
+  });
+    
+  server.listen(PORT, () => {
+    console.log(`Socket is listening on port ${ PORT }!`);
+  });
+
 });

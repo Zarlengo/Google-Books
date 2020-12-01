@@ -7,8 +7,7 @@ import BookContext from '../utils/BookContext';
 import './search.css';
 
 export default function SearchPage() {
-    const [books, setBooks] = useContext(BookContext);
-
+    const { books, setBooks } = useContext(BookContext);
     useEffect(() => {
         setBooks([]);
     }, [setBooks])
@@ -28,7 +27,6 @@ export default function SearchPage() {
                     />
                 )}
             </div>
-            
         </>
     );
 }

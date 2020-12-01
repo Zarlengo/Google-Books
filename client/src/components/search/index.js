@@ -5,7 +5,7 @@ import BookContext from "../../utils/BookContext";
 
 function Search() {
     const [searchString, setSearchString] = useState("");
-    const [ , setBooks ] = useContext(BookContext);
+    const { setBooks } = useContext(BookContext);
 
     const searchGoogle = (event) => {
         event.preventDefault();

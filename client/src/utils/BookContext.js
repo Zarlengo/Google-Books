@@ -4,9 +4,10 @@ const BookContext = createContext();
 
 export const BookContextProvider = props => {
     const [books, setBooks] = useState([]);
+    const [notifications, setNotifications] = useState(0);
 
     return (
-        <BookContext.Provider value={[books, setBooks]} >
+        <BookContext.Provider value={{books, setBooks, notifications, setNotifications}} >
             { props.children }
         </BookContext.Provider>
     );
