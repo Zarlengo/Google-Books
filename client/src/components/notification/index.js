@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BookContext from "../../utils/BookContext";
+import NotificationRow from "../NotificationRow";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,31 +15,73 @@ const socket = io({
 });
 
 function Notification() {
-    const { notifications, setNotifications } = useContext(BookContext);
+    const [showNotifications, setShowNotifications] = useState(false);
 
-    useEffect(() => {  
+    const {
+            notifications, 
+            setNotifications, 
+            notificationArray,
+            setNotificationArray,
+        } = useContext(BookContext);
+
+    useEffect(() => {
         socket.on('book change', payload => {
-            console.log(payload);
             setNotifications(notifications + 1);
+
+            if (notificationArray.filter(element => element.book === payload.book).length === 0) {
+                localStorage.setItem('changedBooks', JSON.stringify([...notificationArray, payload]));
+                setNotificationArray([...notificationArray, payload]);
+            }
+
+
         });
     });
         
     useEffect(() => {
-        console.log('received new message');
         document.title = `${notifications} new books have been changed`;
-    }, [notifications]); //only re-run the effect if new message comes in
+    }, [notifications]);
 
+    const handleMouseOver = (state) => {
+        setShowNotifications(state);
+    };
+
+    const handleMouseClick = (event) => {
+        event.preventDefault();
+        setNotifications(0);
+        setNotificationArray([]);
+        localStorage.setItem('changedBooks', JSON.stringify([]));
+    };
 
     return (
-        <div className="notification">
-            <FontAwesomeIcon icon={ faBookOpen } />
-            { notifications > 0 ? <span className="badge">{ notifications }</span> : '' }
-        </div>
+        <React.Fragment>
+            <div
+                className="notification"
+                onMouseOver={ () => handleMouseOver(true) }
+                onMouseOut= { () => handleMouseOver(false) }
+                onClick={ (event) => handleMouseClick(event) }
+            >
+                <FontAwesomeIcon icon={ faBookOpen } />
+                { notifications > 0 ? <span className="badge">{ notifications }</span> : '' }
+            </div>
+            { showNotifications ? 
+                <div
+                    className="notification-drop-down"
+                    onMouseOver={ () => handleMouseOver(true) }
+                    onMouseOut= { () => handleMouseOver(false) }
+                >
+                    {notificationArray.map(row => 
+                        <NotificationRow
+                            notification={row}
+                            key={row.book}
+                        />
+                    )}
+                </div> : <></>
+            }
+        </React.Fragment>
     );
 }
 
 export const handleNewMessage = (method, book) => {
-    console.log('emitting new message');
     socket.emit('book', {
         method,
         book,
