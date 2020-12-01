@@ -36,9 +36,6 @@ mongoose.connect(
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
 
-  // app.listen(PORT, () => {
-  //   console.log(`🌎 ==> API server now on port ${PORT}!`);
-  // });
   const server = require('http').createServer(app);
   const io = require("socket.io")(server, {
     cors: {
@@ -47,8 +44,6 @@ mongoose.connect(
       credentials: true,
     }
   });
-
-
 
   io.on('connection', socket => {
     console.log('a user connected');
