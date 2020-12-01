@@ -2,7 +2,6 @@ import React from "react";
 import "./style.css";
 
 function NotificationRow({notification}) {
-    console.log({notification: notification});
     let note = '';
     if (notification.method === 'add') {
         note = `Added ${ notification.book }`;
