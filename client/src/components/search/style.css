@@ -12,6 +12,7 @@
 
 .searchLabel {
     font-size: x-large;
+    left: 0;
 }
 .searchButton {
     float: right;

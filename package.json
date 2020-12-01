@@ -1,7 +1,7 @@
 {
-  "name": "mern",
+  "name": "googleBookSearch",
   "version": "1.0.0",
-  "description": "Mern Demo",
+  "description": "React Google Book Search",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
