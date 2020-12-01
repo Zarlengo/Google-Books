@@ -8,9 +8,11 @@ export const BookContextProvider = props => {
     const [notificationArray, setNotificationArray] = useState([]);
 
     useEffect(() => {
-        const savedArray = JSON.parse(localStorage.getItem('changedBooks'))
-        setNotificationArray(savedArray);
-        setNotifications(savedArray.length);
+        const savedArray = JSON.parse(localStorage.getItem('changedBooks'));
+        if (savedArray) {
+            setNotificationArray(savedArray);
+            setNotifications(savedArray.length);
+        }
     }, []);
 
     return (
